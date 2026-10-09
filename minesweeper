@@ -30,3 +30,16 @@ DIFFICULTY_SETTINGS = {
     "Medium": (16, 16, 40),
     "Hard": (16, 30, 99)
 }
+
+# Grid management
+def create_grid(row, col):
+    return [[0 for _ in range(col)] for _ in range(row)]
+
+def place_mines(grid, row, col, num_mines):
+    mines_placed = 0
+    while mines_placed < num_mines:
+        r = random.randint(0, row - 1)
+        c = random.randint(0, col - 1)
+        if grid[r][c] != -1:  # -1 represents a mine
+            grid[r][c] = -1
+            mines_placed += 1
