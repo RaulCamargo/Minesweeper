@@ -40,6 +40,39 @@ def place_mines(grid, row, col, num_mines):
     while mines_placed < num_mines:
         r = random.randint(0, row - 1)
         c = random.randint(0, col - 1)
-        if grid[r][c] != -1:  # -1 represents a mine
+        if grid[r][c] == 0:
             grid[r][c] = -1
             mines_placed += 1
+            for i in range(max(0, r - 1), min(row, r + 2)):
+                for j in range(max(0, c - 1), min(col, c + 2)):
+                    if grid[i][j] != -1:
+                        grid[i][j] += 1
+
+# Drawing and input handling
+def draw_grid(grid, row, col):
+
+    window.fill(BLACK)
+
+    cell_discovered = [[False for _ in range(col)] for _ in range(row)]
+
+    cell_marked = [[False for _ in range(col)] for _ in range(row)]
+
+    for r in range(row):
+        for c in range(col):
+            rect = pygame.Rect(r + c * CELL_WIDTH, c + r * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT)
+            if cell_discovered[r][c]:
+                pygame.draw.rect(window, WHITE, rect)
+                if grid[r][c] == -1:
+                    pygame.draw.circle(window, RED, rect.center, CELL_WIDTH // 4)
+                elif grid[r][c] > 0:
+                    font = pygame.font.Font(None, 24)
+                    text = font.render(str(grid[r][c]), True, BLACK)
+                    window.blit(text, text.get_rect(center=rect.center))
+            else:
+                pygame.draw.rect(window, GRAY, rect)
+                if cell_marked[r][c]:
+                    pygame.draw.line(window, BLUE, rect.topleft, rect.bottomright, 3)
+                    pygame.draw.line(window, BLUE, rect.bottomleft, rect.topright, 3)
+            pygame.draw.rect(window, BLACK, rect, 1)
+    pygame.display.flip()        
+            
