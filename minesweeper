@@ -31,6 +31,20 @@ DIFFICULTY_SETTINGS = {
     "Hard": (16, 30, 99)
 }
 
+# Global variables
+grid = []
+cell_discovered = []
+cell_marked = []
+ROWS = 0
+COLS = 0
+NUM_MINES = 0
+playing = False
+initial_time = 0
+end_time = 0
+margin_r = 0
+margin_c = 0
+victory = False
+
 # Grid management
 def create_grid(row, col):
     return [[0 for _ in range(col)] for _ in range(row)]
@@ -53,13 +67,9 @@ def draw_grid(grid, row, col):
 
     window.fill(BLACK)
 
-    cell_discovered = [[False for _ in range(col)] for _ in range(row)]
-
-    cell_marked = [[False for _ in range(col)] for _ in range(row)]
-
     for r in range(row):
         for c in range(col):
-            rect = pygame.Rect(r + c * CELL_WIDTH, c + r * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT)
+            rect = pygame.Rect(margin_r + c * CELL_WIDTH, margin_c + r * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT)
             if cell_discovered[r][c]:
                 pygame.draw.rect(window, WHITE, rect)
                 if grid[r][c] == -1:
@@ -75,4 +85,14 @@ def draw_grid(grid, row, col):
                     pygame.draw.line(window, BLUE, rect.bottomleft, rect.topright, 3)
             pygame.draw.rect(window, BLACK, rect, 1)
     pygame.display.flip()        
-            
+
+# Cell discovery and marking
+def discover_cell(grid, row, col, r, c):
+    if r < 0 or r >= row or c < 0 or c >= col or cell_discovered[r][c]:
+        return
+    cell_discovered[r][c] = True
+
+    if grid[r][c] == 0:
+        for i in range(max(0, r - 1), min(row, r + 2)):
+            for j in range(max(0, c - 1), min(col, c + 2)):
+                discover_cell(grid, row, col, i, j)
