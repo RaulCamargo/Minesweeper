@@ -96,3 +96,23 @@ def discover_cell(grid, row, col, r, c):
         for i in range(max(0, r - 1), min(row, r + 2)):
             for j in range(max(0, c - 1), min(col, c + 2)):
                 discover_cell(grid, row, col, i, j)
+
+# Start and end screens
+
+def start_screen():
+    window.fill(BLACK)
+    font =pygame.font.Font(None, 48)
+    text = font.render('Choose Difficulty', True, WHITE)
+    window.blit(text, (WINDOW_WIDTH // 2 - text.get_width() // 2, WINDOW_HEIGHT // 4))
+
+    buttons = []
+    for idx, difficulty in enumerate(DIFFICULTY_SETTINGS.keys()):
+        rect = pygame.Rect(WINDOW_WIDTH // 2 - 100, WINDOW_HEIGHT // 2 + idx * 60, 200, 50)
+        pygame.draw.rect(window, GRAY, rect)
+        text = font.render(difficulty, True, BLACK)
+        window.blit(text, (rect.x + rect.width - text.get_width() // 2, rect.y + (rect.height - text.get_height()) // 2))
+        buttons.append((rect, difficulty))
+
+    pygame.display.flip()
+    return buttons
+
