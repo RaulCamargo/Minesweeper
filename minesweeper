@@ -123,5 +123,3 @@ def end_screen(message):
     window.blit(text, (WINDOW_WIDTH // 2 - text.get_width() // 2, WINDOW_HEIGHT // 4))
     pygame.display.flip()
     pygame.time.wait(3000)  # Wait for 3 seconds before closing the game
-
-    
