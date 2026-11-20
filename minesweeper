@@ -124,9 +124,9 @@ def end_screen(message):
     pygame.display.flip()
     pygame.time.wait(3000)  # Wait for 3 seconds before closing the game
 
-def verify_victory():
-    for r in range(ROWS):
-        for c in range(COLS):
+def verify_victory(row, col):
+    for r in range(row):
+        for c in range(col):
             if grid[r][c] != -1 and not cell_discovered[r][c]:
                 return False
     return True
